@@ -1,0 +1,39 @@
+#! /bin/sh
+
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+if [[ $(xrandr -q | grep "HDMI-A-0 connected") ]]; then
+	xrandr --output HDMI-A-0 --mode 1920x1080 --rate 100 --left-of eDP --primary
+	bspc monitor HDMI-A-0 -d I II III IV V VI VII VIII
+	bspc monitor eDP -d IX X
+else
+	bspc monitor -d I II III IV V VI VII VIII
+fi
+
+
+bspc config border_width         	2
+bspc config focused_border_color	"#DBE1FC"
+bspc config window_gap			2
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc rule -a Gimp-2.10 desktop='^5'
+bspc rule -a Stardict state=floating
+bspc rule -a Pavucontrol state=floating
+bspc rule -a OmegaT desktop='^4'
+bspc rule -a Aegisub-3.2 desktop='^5'
+
+~/.fehbg &
+xsetroot -cursor_name left_ptr &
+pgrep -x picom > /dev/null || picom -f &
+pgrep -x xbindkeys > /dev/null || xbindkeys &
+xinput set-prop "ELAN2204:00 04F3:3109 Touchpad" "libinput Tapping Enabled" 1
+pgrep -x mpd > /dev/null || mpd &
+pgrep -x conky > /dev/null || conky &
+pgrep -x caffeine-indicator > /dev/null || caffeine-indicator &
+pgrep -x flameshot > /dev/null || flameshot &
+pgrep -x stardict > /dev/null || stardict &
+pgrep -x claws-mail > /dev/null || claws-mail &
+~/scripts/polybarstart &
